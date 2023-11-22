@@ -52,7 +52,7 @@ class UserRepositoryTest {
 
         userRepository.updateUsername(1, "updateA");
         User updateUser = userRepository.findById(1);
-        log.info("user={}", updateUser);
+//        log.info("user={}", updateUser);
         assertThat(updateUser.getUsername()).isEqualTo("updateA");
     }
 
@@ -84,14 +84,14 @@ class UserRepositoryTest {
 
                 statement.executeBatch();
             } catch (SQLException e) {
-                log.error("clearDB error={}", e);
+//                log.error("clearDB error={}", e);
                 throw e;
             } finally {
                 if (statement != null) {
                     try {
                         statement.close();
                     } catch (Exception e) {
-                        log.error("error", e);
+//                        log.error("error", e);
                     }
                 }
 
@@ -99,7 +99,7 @@ class UserRepositoryTest {
                     try {
                         connection.close();
                     } catch (Exception e) {
-                        log.error("error", e);
+//                        log.error("error", e);
                     }
                 }
             }
