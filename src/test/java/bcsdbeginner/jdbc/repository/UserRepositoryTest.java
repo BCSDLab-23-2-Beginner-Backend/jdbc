@@ -3,20 +3,16 @@ package bcsdbeginner.jdbc.repository;
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
 import bcsdbeginner.jdbc.domain.User;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 
 @Slf4j
 class UserRepositoryTest {
@@ -53,7 +49,7 @@ class UserRepositoryTest {
 
         userRepository.updateUsername(1, "updateA");
         User updateUser = userRepository.findById(1);
-        //log.info("user={}", updateUser);
+        log.info("user={}", updateUser);
         assertThat(updateUser.getUsername()).isEqualTo("updateA");
     }
 
@@ -85,14 +81,14 @@ class UserRepositoryTest {
 
                 statement.executeBatch();
             } catch (SQLException e) {
-                //log.error("clearDB error={}", e);
+                log.error("clearDB error={}", e);
                 throw e;
             } finally {
                 if (statement != null) {
                     try {
                         statement.close();
                     } catch (Exception e) {
-                        //log.error("error", e);
+                        log.error("error", e);
                     }
                 }
 
@@ -100,7 +96,7 @@ class UserRepositoryTest {
                     try {
                         connection.close();
                     } catch (Exception e) {
-                        //log.error("error", e);
+                        log.error("error", e);
                     }
                 }
             }
