@@ -1,6 +1,5 @@
 package bcsdbeginner.jdbc.repository;
 
-import bcsdbeginner.jdbc.DBConnection.DBConnectionConstant;
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
 import bcsdbeginner.jdbc.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,7 +33,7 @@ public class UserRepository {
             log.error("createUser error={}", e);
             throw e;
         } finally {
-            closeResource(connection, statement, null);//사용한 리소스 반환
+            closeResource(connection, statement, null); //사용한 리소스 반환
         }
     }
 
