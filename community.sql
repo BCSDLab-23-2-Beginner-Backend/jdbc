@@ -1,4 +1,5 @@
-CREATE DATABASE community;
+DROP DATABASE community;    // 데이터 베이스 삭제
+CREATE DATABASE community;  // 데이터 베이스 새로 생성
 use community;
 -- 유저 테이블
 CREATE TABLE users (
@@ -7,6 +8,12 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 카테고리 테이블     // 순서 변경
+CREATE TABLE categories (
+                            id INT PRIMARY KEY AUTO_INCREMENT,
+                            name VARCHAR(255) NOT NULL
 );
 
 -- 게시글 테이블
@@ -19,12 +26,6 @@ CREATE TABLE board (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-);
-
--- 카테고리 테이블
-CREATE TABLE categories (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL
 );
 
 -- 해시태그 테이블
@@ -44,4 +45,4 @@ CREATE TABLE board_hashtags (
 
 select * from users;
 delete from users;
- alter table users AUTO_INCREMENT = 1;
+alter table users AUTO_INCREMENT = 1;

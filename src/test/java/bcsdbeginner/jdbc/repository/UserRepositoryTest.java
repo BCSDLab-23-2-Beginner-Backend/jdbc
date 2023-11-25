@@ -56,6 +56,7 @@ class UserRepositoryTest {
         assertThat(updateUser.getUsername()).isEqualTo("updateA");
     }
 
+
     @Test
     void deleteUser() throws SQLException {
         userRepository.deleteUser(1);
