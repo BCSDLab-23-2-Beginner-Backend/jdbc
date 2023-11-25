@@ -13,14 +13,12 @@ public class Board {
     private Integer category_id;
     private String title;
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime created_at;
 
     // 유저 id를 제외한 다른 id는 직접 입력 하는 형식이 아님
-    public Board(Integer userid, String titles, String contents, LocalDateTime timestamps) {
+    public Board(Integer userid, String titles, String contents) {
         this.user_id = userid;
         this.title = titles;
         this.content = contents;
-        this.timestamp = timestamps;
-
     }
 }
