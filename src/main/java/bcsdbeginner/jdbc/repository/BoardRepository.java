@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class BoardRepository {
+
+    // 새로운 게시물 생성 메서드
     public Board createBoard(Board newBoard) throws SQLException {
         Connection connection = null; //데이터베이스 연결을 나타내는 객체
         PreparedStatement statement = null; //SQL 문을 실행하기 위한 객체
@@ -21,11 +23,12 @@ public class BoardRepository {
             connection = DBConnectionManager.getConnection();   //DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);   //SQL실행 하기위한 객체 PrepareStatement 생성
 
+            // 새 게시물 정보 바인딩
             statement.setInt(1, newBoard.getUser_id()); //DB컬럼과 자바 오브젝트 필드 바인딩 // getter는 @Data에서 자동 생성
             statement.setString(2, newBoard.getTitle());
             statement.setString(3, newBoard.getContent());
 
-            statement.executeUpdate();
+            statement.executeUpdate(); // 쿼리 실행
             return newBoard;
 
         } catch (SQLException e) {
@@ -47,11 +50,12 @@ public class BoardRepository {
             connection = DBConnectionManager.getConnection();
             statement = connection.prepareStatement(sql);
 
+            // 게시물 정보 바인딩
             statement.setInt(1, user_Id);
 
-            rs = statement.executeQuery();
+            rs = statement.executeQuery();   // 쿼리 실행 결과를 result set에 저장
             Board board = new Board();
-            while (rs.next()) {
+            while (rs.next()) {  // resultset을 반복하여 게시물 정보를 추출
                 board.setId(rs.getInt("id"));
                 board.setUser_id(rs.getInt("user_id"));
                 board.setCategory_id(rs.getInt("category_id"));
@@ -83,9 +87,9 @@ public class BoardRepository {
 
             statement.setString(1, title);
 
-            rs = statement.executeQuery();
+            rs = statement.executeQuery();   // 쿼리 실행 결과를 result set에 저장
             Board board = new Board();
-            while (rs.next()) {
+            while (rs.next()) {          // resultset을 반복하여 게시물 정보를 추출
                 board.setId(rs.getInt("id"));
                 board.setUser_id(rs.getInt("user_id"));
                 board.setCategory_id(rs.getInt("category_id"));
@@ -114,6 +118,7 @@ public class BoardRepository {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
+            // 업데이트 게시물 내용 바인딩
             statement.setString(1, newTitle);
             statement.setString(2, newContent);
             statement.setInt(3, id);

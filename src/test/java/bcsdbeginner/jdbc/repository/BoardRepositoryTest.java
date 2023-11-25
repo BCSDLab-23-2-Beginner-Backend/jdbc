@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class BoardRepositoryTest {
 
+    // 각 테스트 메서드 실행 전 데이터베이스 초기화
     BoardRepository boardRepository = new BoardRepository();
 
     @BeforeEach
@@ -36,6 +37,7 @@ class BoardRepositoryTest {
     void findById() throws SQLException{
         Board board1 = new Board(1, "BCSD과제", "JDBC과제해오세용");
         Board newBoard = boardRepository.createBoard(board1);
+
         Board findBoard = boardRepository.findById(1);
         assertThat(findBoard.getId()).isEqualTo(1);
     }
@@ -45,6 +47,7 @@ class BoardRepositoryTest {
     void findByTitle() throws SQLException{
         Board board1 = new Board(1, "BCSD과제", "JDBC과제해오세용");
         Board newBoard = boardRepository.createBoard(board1);
+
         Board findBoard = boardRepository.findByTitle("BCSD과제");
         assertThat(findBoard.getId()).isEqualTo(1);
     }
@@ -66,6 +69,7 @@ class BoardRepositoryTest {
     void deleteBoard() throws SQLException{
         Board board1 = new Board(1, "BCSD과제", "JDBC과제해오세용");
         boardRepository.deleteBoard("BCSD과제");
+
         Integer deleteId = boardRepository.findByTitle("BCSD과제").getId();
         assertThat(deleteId).isNull();
     }
