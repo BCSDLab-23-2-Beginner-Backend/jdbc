@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class UserRepositoryTest {
 
     UserRepository userRepository = new UserRepository();
-
     @BeforeEach
     void clearDB() throws SQLException {
+        //
         Helper.clearDB();
     }
 
@@ -61,10 +61,9 @@ class UserRepositoryTest {
         userRepository.deleteUser(1);
 
         Integer deleteId = userRepository.findById(1).getId();
-
         assertThat(deleteId).isNull();
     }
-
+    @Slf4j
     static class Helper {
         public static void clearDB() throws SQLException {
             Connection connection = null;
