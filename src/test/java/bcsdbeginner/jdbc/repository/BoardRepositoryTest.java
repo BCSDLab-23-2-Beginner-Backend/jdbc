@@ -1,7 +1,7 @@
 package bcsdbeginner.jdbc.repository;
 
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
-import bcsdbeginner.jdbc.domain.User;
+import bcsdbeginner.jdbc.domain.Board;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,14 +9,13 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class UserRepositoryTest {
+class BoardRepositoryTest {
 
-    Repository<User> userRepository = new UserRepository();
+    Repository<Board> boardRepository = new BoardRepository();
 
     @BeforeEach
     void clearDB() throws SQLException {
@@ -25,40 +24,40 @@ class UserRepositoryTest {
 
     @Test
     void create() throws SQLException {
-        User user1 = new User("userA", "bcsd@koreatech.ac.kr", "1111");
-        User newUser = userRepository.create(user1);
-        newUser.setCreate_at(LocalDateTime.of(2000, 1, 3, 10, 10, 10));
-        assertThat(newUser.getUsername()).isEqualTo("userA");
+        Board board1 = new Board(1, 1, "Title", "Content");
+        Board newBoard = boardRepository.create(board1);
+
+        assertThat(newBoard.getTitle()).isEqualTo("Title");
     }
 
     @Test
     void findById() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        User newUser = userRepository.create(user1);
+        Board board1 = new Board(1, 1, "Title", "Content");
+        boardRepository.create(board1);
 
-        User findUser = userRepository.findById(1);
+        Board findBoard = boardRepository.findById(1);
 
-        assertThat(findUser.getId()).isEqualTo(1);
+        assertThat(findBoard.getId()).isEqualTo(1);
     }
 
     @Test
     void update() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        userRepository.create(user1);
+        Board board1 = new Board(1, 1, "Title", "Content");
+        boardRepository.create(board1);
 
-        user1.setUsername("updateA");
+        board1.setTitle("updateTitle");
 
-        userRepository.update(1, user1);
-        User updateUser = userRepository.findById(1);
-        log.info("user={}", updateUser);
-        assertThat(updateUser.getUsername()).isEqualTo("updateA");
+        boardRepository.update(1, board1);
+        Board updateBoard = boardRepository.findById(1);
+        log.info("board={}", updateBoard);
+        assertThat(updateBoard.getTitle()).isEqualTo("updateTitle");
     }
 
     @Test
     void delete() throws SQLException {
-        userRepository.delete(1);
+        boardRepository.delete(1);
 
-        Integer deleteId = userRepository.findById(1).getId();
+        Integer deleteId = boardRepository.findById(1).getId();
 
         assertThat(deleteId).isNull();
     }
@@ -67,8 +66,8 @@ class UserRepositoryTest {
         public static void clearDB() throws SQLException {
             Connection connection = null;
             Statement statement = null;
-            String sql1 = "delete from users";
-            String sql2 = "alter table users AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
+            String sql1 = "delete from board";
+            String sql2 = "alter table board AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
 
             try {
                 connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성

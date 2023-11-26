@@ -2,9 +2,7 @@ package bcsdbeginner.jdbc.DBConnection;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static bcsdbeginner.jdbc.DBConnection.DBConnectionConstant.*;
 
@@ -17,6 +15,33 @@ public class DBConnectionManager {
             return connection;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void close(Connection connection, PreparedStatement statement, ResultSet resultSet) {
+        //반환할 때는 반드시 역순으로 반환해야 함.
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (Exception e) {
+                log.error("error", e);
+            }
+        }
+
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (Exception e) {
+                log.error("error", e);
+            }
+        }
+
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                log.error("error", e);
+            }
         }
     }
 

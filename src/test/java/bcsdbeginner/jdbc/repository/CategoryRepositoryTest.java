@@ -1,7 +1,7 @@
 package bcsdbeginner.jdbc.repository;
 
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
-import bcsdbeginner.jdbc.domain.User;
+import bcsdbeginner.jdbc.domain.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,14 +9,13 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class UserRepositoryTest {
+class CategoryRepositoryTest {
 
-    Repository<User> userRepository = new UserRepository();
+    Repository<Category> categoryRepository = new CategoryRepository();
 
     @BeforeEach
     void clearDB() throws SQLException {
@@ -25,40 +24,40 @@ class UserRepositoryTest {
 
     @Test
     void create() throws SQLException {
-        User user1 = new User("userA", "bcsd@koreatech.ac.kr", "1111");
-        User newUser = userRepository.create(user1);
-        newUser.setCreate_at(LocalDateTime.of(2000, 1, 3, 10, 10, 10));
-        assertThat(newUser.getUsername()).isEqualTo("userA");
+        Category category1 = new Category("category");
+        Category newCategory = categoryRepository.create(category1);
+
+        assertThat(newCategory.getName()).isEqualTo("category");
     }
 
     @Test
     void findById() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        User newUser = userRepository.create(user1);
+        Category category1 = new Category("category");
+        categoryRepository.create(category1);
 
-        User findUser = userRepository.findById(1);
+        Category findCategory = categoryRepository.findById(1);
 
-        assertThat(findUser.getId()).isEqualTo(1);
+        assertThat(findCategory.getId()).isEqualTo(1);
     }
 
     @Test
     void update() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        userRepository.create(user1);
+        Category category1 = new Category("category");
+        categoryRepository.create(category1);
 
-        user1.setUsername("updateA");
+        category1.setName("updateCategory");
 
-        userRepository.update(1, user1);
-        User updateUser = userRepository.findById(1);
-        log.info("user={}", updateUser);
-        assertThat(updateUser.getUsername()).isEqualTo("updateA");
+        categoryRepository.update(1, category1);
+        Category updateCategory = categoryRepository.findById(1);
+        log.info("board={}", updateCategory);
+        assertThat(updateCategory.getName()).isEqualTo("updateCategory");
     }
 
     @Test
     void delete() throws SQLException {
-        userRepository.delete(1);
+        categoryRepository.delete(1);
 
-        Integer deleteId = userRepository.findById(1).getId();
+        Integer deleteId = categoryRepository.findById(1).getId();
 
         assertThat(deleteId).isNull();
     }
@@ -67,8 +66,8 @@ class UserRepositoryTest {
         public static void clearDB() throws SQLException {
             Connection connection = null;
             Statement statement = null;
-            String sql1 = "delete from users";
-            String sql2 = "alter table users AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
+            String sql1 = "delete from categories";
+            String sql2 = "alter table categories AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
 
             try {
                 connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
