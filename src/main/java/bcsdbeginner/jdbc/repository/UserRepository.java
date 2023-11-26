@@ -1,7 +1,8 @@
 package bcsdbeginner.jdbc.repository;
 
-import bcsdbeginner.jdbc.DBConnection.DBConnectionConstant;
+
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
+import bcsdbeginner.jdbc.domain.Board;
 import bcsdbeginner.jdbc.domain.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,25 +10,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class UserRepository {
-    public User createUser(User newUser) throws SQLException {
+    public User createUser(User newUser) throws SQLException {//사용자 생성
         Connection connection = null;
         PreparedStatement statement = null;
-        String sql = "insert into users(username, email, password) values(?, ?, ?)";//DB에 넘길 SQL 작성
+        String sql = "insert into User values(null, ?, ?, ?, ?)";//DB에 넘길 SQL 작성
 
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
-            statement.setString(1, newUser.getUsername());//DB컬럼과 자바 오브젝트 필드 바인딩
-            statement.setString(2, newUser.getEmail());
-            statement.setString(3, newUser.getPassword());
-
+            //DB컬럼과 자바 오브젝트 필드 바인딩
+            //statement.setInt(1, newUser.getUser_num());
+            statement.setString(1, newUser.getUser_id());//DB컬럼과 자바 오브젝트 필드 바인딩
+            statement.setString(2, newUser.getUser_name());
+            statement.setString(3, newUser.getUser_pw());
+            statement.setString(4, newUser.getUser_email());
             statement.executeUpdate();
             return newUser;
 
@@ -39,50 +39,23 @@ public class UserRepository {
         }
     }
 
-    public User findById(Integer userId) throws SQLException {
+    public void updateUser(User updateUser) throws SQLException{
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet rs = null;
-        String sql = "select * from users where id = ?";
-
-        try {
-            connection = DBConnectionManager.getConnection();
-            statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, userId);
-
-            rs = statement.executeQuery();
-            User user = new User();
-            while (rs.next()) {
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                user.setCreate_at(LocalDateTime.parse(rs.getString("created_at"), format));
-            }
-            return user;
-        } catch (SQLException e) {
-            log.error("selectUser error={}", e);
-            throw e;
-        } finally {
-            closeResource(connection, statement, rs);//사용한 리소스 반환
-        }
-    }
-
-    public void updateUsername(Integer id, String newUsername) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        String sql = "update users set username = ? where id = ?";
-
+        String sql = "update User set user_name = ? , user_pw = ?, user_email = ? WHERE user_id = ?";//DB에 넘길 SQL 작성
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
-            statement.setString(1, newUsername);//DB컬럼과 자바 오브젝트 필드 바인딩
-            statement.setInt(2, id);
+            //DB컬럼과 자바 오브젝트 필드 바인딩
+            statement.setString(1, updateUser.getUser_name());
+            statement.setString(2, updateUser.getUser_pw());
+            statement.setString(3, updateUser.getUser_email());
+            statement.setString(4, updateUser.getUser_id());
 
             statement.executeUpdate();
+
+
         } catch (SQLException e) {
             log.error("updateUser error={}", e);
             throw e;
@@ -91,16 +64,71 @@ public class UserRepository {
         }
     }
 
-    public void deleteUser(int id) throws SQLException {
+    public User findById(String userId) throws SQLException { //아이디 조회
         Connection connection = null;
         PreparedStatement statement = null;
-        String sql = "delete from users where id = ?";
+        ResultSet rs = null;
+        String sql = "select * from User where user_id = ?";
+
+        try {
+            connection = DBConnectionManager.getConnection();
+            statement = connection.prepareStatement(sql);
+
+            statement.setString(1, userId);
+
+            rs = statement.executeQuery();
+            User user = new User();
+            while (rs.next()) {
+                user.setUser_num(rs.getInt("user_num"));
+                user.setUser_id(rs.getString("user_id"));
+                user.setUser_name(rs.getString("user_name"));
+                user.setUser_pw(rs.getString("user_pw"));
+                user.setUser_email(rs.getString("user_email"));
+            }
+            return user;
+        } catch (SQLException e) {
+            log.error("selectUser error={}", e);
+            throw e;
+        } finally {
+            closeResource(connection, statement, rs);
+        }
+    }
+    //게시물 저장
+    public void crateBoard(Board newBoard) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String sql = "insert into Board(user_num, title, content, board_num, board_day) values(?, ?, ?, ?, ?)";
+
+        try {
+            connection = DBConnectionManager.getConnection(); // DriverManager를 통해 DB 커넥션 생성
+            statement = connection.prepareStatement(sql); // SQL 실행을 위한 PrepareStatement 객체 생성
+
+            //statement.setInt(1, newBoard.getUser_num()); // DB 컬럼과 자바 객체 필드를 바인딩
+            statement.setString(1, newBoard.getTitle());
+            statement.setString(2, newBoard.getContent());
+            //statement.setInt(4, newBoard.getBoard_num());
+            statement.setTimestamp(3, newBoard.getBoard_day());
+
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("updateBoard error={}", e);
+            throw e;
+        } finally {
+            closeResource(connection, statement, null); // 사용한 리소스 반환
+        }
+    }
+
+    public void deleteUser(Integer userNum) throws SQLException {//회원 탈퇴
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String sql = "delete from User where user_num = ?";
 
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
-            statement.setInt(1, id);//DB컬럼과 자바 오브젝트 필드 바인딩
+            statement.setInt(1, userNum);//DB컬럼과 자바 오브젝트 필드 바인딩
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -110,6 +138,8 @@ public class UserRepository {
             closeResource(connection, statement, null);//사용한 리소스 반환
         }
     }
+
+
     private void closeResource(Connection connection, PreparedStatement statement, ResultSet resultSet) {
         //반환할 때는 반드시 역순으로 반환해야 함.
         if (resultSet != null) {
@@ -136,4 +166,7 @@ public class UserRepository {
             }
         }
     }
+
+
+
 }
