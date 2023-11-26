@@ -1,100 +1,97 @@
 package bcsdbeginner.jdbc.repository;
 
-import bcsdbeginner.jdbc.DBConnection.DBConnectionConstant;
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
-import bcsdbeginner.jdbc.domain.User;
+import bcsdbeginner.jdbc.domain.Board;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
-public class UserRepository {
-    public User createUser(User newUser) throws SQLException {
+public class BoardRepository {
+    public Board createBoard(Board newBoard) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        String sql = "insert into users(username, email, password) values(?, ?, ?)";//DB에 넘길 SQL 작성
+        String sql = "insert into board(user_id, category_id,title,content) values(?, ?, ?, ?)";//DB에 넘길 SQL 작성
 
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
-            statement.setString(1, newUser.getUsername());//DB컬럼과 자바 오브젝트 필드 바인딩
-            statement.setString(2, newUser.getEmail());
-            statement.setString(3, newUser.getPassword());
+            statement.setInt(1, newBoard.getUser_id());//DB컬럼과 자바 오브젝트 필드 바인딩
+            statement.setInt(2, newBoard.getCategory_id());
+            statement.setString(3, newBoard.getTitle());
+            statement.setString(4, newBoard.getContent());
 
             statement.executeUpdate();
-            return newUser;
+            return newBoard;
 
         } catch (SQLException e) {
-          //  log.error("createUser error={}", e);
+            log.error("createBoard error={}", e);
             throw e;
         } finally {
             closeResource(connection, statement, null);//사용한 리소스 반환
         }
     }
-
-    public User findById(Integer userId) throws SQLException {
+    public Board findById(Integer boardId) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
-        String sql = "select * from users where id = ?";
+        String sql = "select * from board where id = ?";
 
         try {
             connection = DBConnectionManager.getConnection();
             statement = connection.prepareStatement(sql);
 
-            statement.setInt(1, userId);
+            statement.setInt(1, boardId);
 
             rs = statement.executeQuery();
-            User user = new User();
+            Board board = new Board();
+
             while (rs.next()) {
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                board.setId(rs.getInt("id"));
+                board.setUser_id(rs.getInt("user_id"));
+                board.setCategory_id(rs.getInt("category_id"));
+                board.setTitle(rs.getString("title"));
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                user.setCreate_at(LocalDateTime.parse(rs.getString("created_at"), format));
+                board.setCreated_at(LocalDateTime.parse(rs.getString("created_at"), format));
             }
-            return user;
+            return board;
         } catch (SQLException e) {
-           // log.error("selectUser error={}", e);
+            log.error("selectBoard error={}", e);
             throw e;
         } finally {
             closeResource(connection, statement, rs);//사용한 리소스 반환
         }
     }
-
-    public void updateUsername(Integer id, String newUsername) throws SQLException {
+    public void updateBoardTitle(Integer id, String newTitle) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        String sql = "update users set username = ? where id = ?";
+        String sql = "update board set title = ? where id = ?";
 
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
             statement = connection.prepareStatement(sql);//SQL실행 하기위한 객체 PrepareStatement 생성
 
-            statement.setString(1, newUsername);//DB컬럼과 자바 오브젝트 필드 바인딩
+            statement.setString(1, newTitle);//DB컬럼과 자바 오브젝트 필드 바인딩
             statement.setInt(2, id);
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            //log.error("updateUser error={}", e);
+            log.error("updateBoard error={}", e);
             throw e;
         } finally {
             closeResource(connection, statement, null);//사용한 리소스 반환
         }
     }
-
-    public void deleteUser(int id) throws SQLException {
+    public void deleteBoard(int id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        String sql = "delete from users where id = ?";
+        String sql = "delete from board where id = ?";
 
         try {
             connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
@@ -104,7 +101,7 @@ public class UserRepository {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-           // log.error("deleteUser error={}", e);
+            log.error("deleteBoard error={}", e);
             throw e;
         } finally {
             closeResource(connection, statement, null);//사용한 리소스 반환
@@ -116,7 +113,7 @@ public class UserRepository {
             try {
                 resultSet.close();
             } catch (Exception e) {
-             //   log.error("error", e);
+                log.error("error", e);
             }
         }
 
@@ -124,7 +121,7 @@ public class UserRepository {
             try {
                 statement.close();
             } catch (Exception e) {
-             //   log.error("error", e);
+                log.error("error", e);
             }
         }
 
@@ -132,7 +129,7 @@ public class UserRepository {
             try {
                 connection.close();
             } catch (Exception e) {
-            //    log.error("error", e);
+                log.error("error", e);
             }
         }
     }
