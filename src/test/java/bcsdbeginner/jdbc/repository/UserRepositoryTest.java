@@ -65,6 +65,8 @@ class UserRepositoryTest {
         assertThat(deleteId).isNull();
     }
 
+
+
     static class Helper {
         public static void clearDB() throws SQLException {
             Connection connection = null;
@@ -83,22 +85,29 @@ class UserRepositoryTest {
                 statement.setString(2, table);*/
 
                 statement.executeBatch();
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 log.error("clearDB error={}", e);
                 throw e;
-            } finally {
-                if (statement != null) {
+            }
+            finally
+            {
+                if (statement != null)
+                {
                     try {
                         statement.close();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         log.error("error", e);
                     }
                 }
 
-                if (connection != null) {
+                if (connection != null)
+                {
                     try {
                         connection.close();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         log.error("error", e);
                     }
                 }
