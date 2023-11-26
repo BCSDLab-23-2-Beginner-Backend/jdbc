@@ -1,22 +1,22 @@
 package bcsdbeginner.jdbc.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
-    private Integer id;
-    private String username;
-    private String email;
-    private String password;
-    private LocalDateTime create_at;
+    private Integer user_num;
+    private String user_id;
+    private String user_name;
+    private String user_pw;
+    private String user_email;
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public User(String userid, String username, String password, String email){
+        this.user_id =  userid;
+        this.user_name = username;
+        this.user_pw = password;
+        this.user_email = email;
     }
 }
