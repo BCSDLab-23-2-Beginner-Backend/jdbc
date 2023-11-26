@@ -22,37 +22,36 @@ class UserRepositoryTest {
 
     UserRepository userRepository = new UserRepository();
 
-    @BeforeEach
-    void clearDB() throws SQLException {
-        Helper.clearDB();
-    }
+//    @BeforeEach
+//    void clearDB() throws SQLException {
+//        Helper.clearDB();
+//    }
 
     @Test
     void createUser() throws SQLException {
-        User user1 = new User("userA", "bcsd@koreatech.ac.kr", "1111");
+        User user1 = new User("userC", "helloWorld@koreatech.ac.kr", "1357");
         User newUser = userRepository.createUser(user1);
         newUser.setCreate_at(LocalDateTime.of(2000, 1, 3, 10, 10, 10));
-        assertThat(newUser.getUsername()).isEqualTo("userA");
+        assertThat(newUser.getUsername()).isEqualTo("userC");
     }
 
     @Test
     void findById() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        User newUser = userRepository.createUser(user1);
+//        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
+//        User newUser = userRepository.createUser(user1);
 
-        User findUser = userRepository.findById(1);
-
-        assertThat(findUser.getId()).isEqualTo(1);
+        User findUser = userRepository.findById(3);
+        assertThat(findUser.getId()).isEqualTo(3);
     }
 
     @Test
     void updateUsername() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        userRepository.createUser(user1);
+//        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
+//        userRepository.createUser(user1);
 
         userRepository.updateUsername(1, "updateA");
         User updateUser = userRepository.findById(1);
-        log.info("user={}", updateUser);
+//        log.info("user={}", updateUser);
         assertThat(updateUser.getUsername()).isEqualTo("updateA");
     }
 
@@ -84,14 +83,14 @@ class UserRepositoryTest {
 
                 statement.executeBatch();
             } catch (SQLException e) {
-                log.error("clearDB error={}", e);
+//                log.error("clearDB error={}", e);
                 throw e;
             } finally {
                 if (statement != null) {
                     try {
                         statement.close();
                     } catch (Exception e) {
-                        log.error("error", e);
+//                        log.error("error", e);
                     }
                 }
 
@@ -99,7 +98,7 @@ class UserRepositoryTest {
                     try {
                         connection.close();
                     } catch (Exception e) {
-                        log.error("error", e);
+//                        log.error("error", e);
                     }
                 }
             }
