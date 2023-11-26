@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 class UserRepositoryTest {
-
     UserRepository userRepository = new UserRepository();
 
     @Test
