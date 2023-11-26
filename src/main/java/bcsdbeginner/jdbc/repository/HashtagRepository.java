@@ -1,7 +1,6 @@
 package bcsdbeginner.jdbc.repository;
 
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
-import bcsdbeginner.jdbc.domain.Categories;
 import bcsdbeginner.jdbc.domain.Hashtags;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,7 +84,7 @@ public class HashtagRepository {
         }
     }
 
-    public void read(){
+    public void read() {
         Connection connection = null;
         PreparedStatement statement = null;     // 기본 제공
         String sql = "select * from hashtag";
@@ -101,6 +100,7 @@ public class HashtagRepository {
             closeResources(connection, statement, null);
         }
     }
+
     private void closeResources(Connection connection, PreparedStatement statement, ResultSet resultSet) {
         if (resultSet != null) {
             try {

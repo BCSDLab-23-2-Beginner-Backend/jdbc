@@ -4,15 +4,15 @@ public class Hashtags {
     private int id;
     private String name;
 
-    public Hashtags(String name){
+    public Hashtags(String name) {
         this.name = name;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 }

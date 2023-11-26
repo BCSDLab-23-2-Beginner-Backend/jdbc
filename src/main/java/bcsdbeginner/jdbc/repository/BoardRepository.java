@@ -2,7 +2,6 @@ package bcsdbeginner.jdbc.repository;
 
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
 import bcsdbeginner.jdbc.domain.Board;
-import bcsdbeginner.jdbc.domain.User;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class BoardRepository {
 
-    public Board save(Board board) throws SQLException{
+    public Board save(Board board) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         String sql = "insert into board(user_id, category_id, title, content) values(?,?,?,?)";
@@ -127,7 +126,7 @@ public class BoardRepository {
         }
     }
 
-    public void read(){
+    public void read() {
         Connection connection = null;
         PreparedStatement statement = null;     // 기본 제공
         String sql = "select * from board";
@@ -143,6 +142,7 @@ public class BoardRepository {
             closeResources(connection, statement, null);
         }
     }
+
     private void closeResources(Connection connection, PreparedStatement statement, ResultSet resultSet) {
         if (resultSet != null) {
             try {

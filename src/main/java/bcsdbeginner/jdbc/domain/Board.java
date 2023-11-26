@@ -21,32 +21,4 @@ public class Board {
 
         this.created_at = LocalDateTime.now();
     }
-
-    //public Integer getId() {
-    //    return id;
-    //}
-//
-    //public Integer getUser_id() {
-    //    return user_id;
-    //}
-//
-    //public Integer getCategory_id() {
-    //    return category_id;
-    //}
-//
-    //public String getTitle() {
-    //    return title;
-    //}
-//
-    //public String getContent() {
-    //    return content;
-    //}
-//
-    //public LocalDateTime getCreated_at() {
-    //    return created_at;
-    //}
-    //
-    //public void setId(int user_id){
-    //    this.user_id = user_id;
-    //}
 }

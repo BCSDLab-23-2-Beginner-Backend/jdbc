@@ -1,6 +1,5 @@
 package bcsdbeginner.jdbc.repository;
 
-import bcsdbeginner.jdbc.DBConnection.DBConnectionConstant;
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
 import bcsdbeginner.jdbc.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -110,6 +108,7 @@ public class UserRepository {
             closeResource(connection, statement, null);//사용한 리소스 반환
         }
     }
+
     private void closeResource(Connection connection, PreparedStatement statement, ResultSet resultSet) {
         //반환할 때는 반드시 역순으로 반환해야 함.
         if (resultSet != null) {
