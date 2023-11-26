@@ -33,8 +33,8 @@ class BoardRepositoryTest {
 
     @Test
     void findBoardById() throws SQLException {
-        Board findBoard = boardRepository.findBoardById(12);
-        assertThat(findBoard.getId()).isEqualTo(12);
+        Board findBoard = boardRepository.findBoardById(7);
+        assertThat(findBoard.getId()).isEqualTo(7);
     }
 
     @Test
@@ -51,23 +51,23 @@ class BoardRepositoryTest {
 
     @Test
     void updateBoardTitle() throws SQLException {
-        boardRepository.updateBoardTitle(4, "updated board4 title");
-        Board updateBoard = boardRepository.findBoardById(4);
-        assertThat(updateBoard.getTitle()).isEqualTo("updated board4 title");
+        boardRepository.updateBoardTitle(13, "updated board13 title");
+        Board updateBoard = boardRepository.findBoardById(13);
+        assertThat(updateBoard.getTitle()).isEqualTo("updated board13 title");
     }
 
     @Test
     void updateBoardContent() throws SQLException {
-        boardRepository.updateBoardContent(7, "updated board7 content");
-        Board updateBoard = boardRepository.findBoardById(7);
-        assertThat(updateBoard.getContent()).isEqualTo("updated board7 content");
+        boardRepository.updateBoardContent(13, "updated board13 content");
+        Board updateBoard = boardRepository.findBoardById(13);
+        assertThat(updateBoard.getContent()).isEqualTo("updated board13 content");
     }
 
     @Test
     void deleteBoard() throws SQLException {
-        boardRepository.deleteBoard(12);
-        Integer deletId = boardRepository.findBoardById(12).getId();
-        assertThat(deletId).isNull();
+        boardRepository.deleteBoard(13);
+        Integer deleteId = boardRepository.findBoardById(13).getId();
+        assertThat(deleteId).isNull();
     }
 
     static class Helper {

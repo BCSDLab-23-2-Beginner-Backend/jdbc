@@ -91,7 +91,7 @@ public class UserRepository {
         }
     }
 
-    public void deleteUser(int id) throws SQLException {
+    public void deleteUser(Integer id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         String sql = "delete from users where id = ?";

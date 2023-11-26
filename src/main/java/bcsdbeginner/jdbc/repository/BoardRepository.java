@@ -182,6 +182,7 @@ public class BoardRepository {
         }
     }
 
+    //게시물 삭제
     public void deleteBoard(int id) throws SQLException{
         Connection connection = null;
         PreparedStatement statement = null;
