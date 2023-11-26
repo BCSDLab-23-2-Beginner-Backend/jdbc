@@ -93,31 +93,6 @@ public class UserRepository {
             closeResource(connection, statement, rs);
         }
     }
-    //게시물 저장
-    public void crateBoard(Board newBoard) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        String sql = "insert into Board(user_num, title, content, board_num, board_day) values(?, ?, ?, ?, ?)";
-
-        try {
-            connection = DBConnectionManager.getConnection(); // DriverManager를 통해 DB 커넥션 생성
-            statement = connection.prepareStatement(sql); // SQL 실행을 위한 PrepareStatement 객체 생성
-
-            //statement.setInt(1, newBoard.getUser_num()); // DB 컬럼과 자바 객체 필드를 바인딩
-            statement.setString(1, newBoard.getTitle());
-            statement.setString(2, newBoard.getContent());
-            //statement.setInt(4, newBoard.getBoard_num());
-            statement.setTimestamp(3, newBoard.getBoard_day());
-
-
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("updateBoard error={}", e);
-            throw e;
-        } finally {
-            closeResource(connection, statement, null); // 사용한 리소스 반환
-        }
-    }
 
     public void deleteUser(Integer userNum) throws SQLException {//회원 탈퇴
         Connection connection = null;
