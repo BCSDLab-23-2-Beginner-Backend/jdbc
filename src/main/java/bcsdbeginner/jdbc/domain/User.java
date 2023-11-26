@@ -1,11 +1,13 @@
 package bcsdbeginner.jdbc.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     private Integer id;
@@ -13,10 +15,4 @@ public class User {
     private String email;
     private String password;
     private LocalDateTime create_at;
-
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 }
