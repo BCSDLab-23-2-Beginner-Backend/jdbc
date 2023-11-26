@@ -22,7 +22,6 @@ class BoardRepositoryTest {
     @BeforeEach
     void clearDB() throws SQLException {
         Helper.clearDB();
-        createBoard();
         // 테스트를 위한 전처리
         // 게시글을 등록하기 위해선 user와 category와 같은 정보가 추가되어있어야함
     }
@@ -41,6 +40,7 @@ class BoardRepositoryTest {
     @Test
     void findById() throws SQLException {
         Integer boardId = 1;
+        createBoard();
         Board board = boardRepository.findById(boardId);
         assertThat(board.getId()).isEqualTo(boardId);
     }
@@ -49,6 +49,7 @@ class BoardRepositoryTest {
     void updateBoard() throws SQLException {
         // 업데이트하고싶은 값을 넘겨주고 DB에서 변경된 값을 불러와서 제대로 변경되었는지 확인.
         Integer boardId = 1;
+        createBoard();
         boardRepository.updateBoard(boardId, null, null, "제1", "내1");
         Board board = boardRepository.findById(boardId);
         assertThat(board.getTitle()).isEqualTo("제1");
@@ -61,6 +62,7 @@ class BoardRepositoryTest {
         // 조회가 된다면 삭제 X
         // 조회가 안된다면 삭제 O
         Integer boardId = 1;
+        createBoard();
         boardRepository.deleteBoard(boardId);
         Board board = boardRepository.findById(boardId);
         assertThat(board.getId()).isNull();
