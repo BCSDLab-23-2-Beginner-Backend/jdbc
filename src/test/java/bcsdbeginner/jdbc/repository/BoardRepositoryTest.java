@@ -1,76 +1,77 @@
 package bcsdbeginner.jdbc.repository;
 
 import bcsdbeginner.jdbc.DBConnection.DBConnectionManager;
-import bcsdbeginner.jdbc.domain.User;
+import bcsdbeginner.jdbc.domain.Board;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-class UserRepositoryTest {
-
-    UserRepository userRepository = new UserRepository();
+public class BoardRepositoryTest {
+    BoardRepository boardRepository = new BoardRepository();
 
     @BeforeEach
     void clearDB() throws SQLException {
-        Helper.clearDB();
+        UserRepositoryTest.Helper.clearDB();
     }
 
     @Test
-    void createUser() throws SQLException {
-        User user1 = new User("userA", "bcsd@koreatech.ac.kr", "1111");
-        User newUser = userRepository.createUser(user1);
-        newUser.setCreate_at(LocalDateTime.of(2000, 1, 3, 10, 10, 10));
-        assertThat(newUser.getUsername()).isEqualTo("userA");
+    void createBoard() throws SQLException {
+        // board 객체 생성
+        Board board1 = new Board(1, 1, "bcsd", "aaa");
+        // boardRepository의 createBoard 메소드 호출
+        Board newBoard = boardRepository.createBoard(board1);
+        newBoard.setCreated_at(LocalDateTime.of(2000, 1, 3, 10, 10, 10));
+        assertThat(newBoard.getUser_id()).isEqualTo(1);
     }
 
     @Test
-    void findById() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        User newUser = userRepository.createUser(user1);
+    void findById() throws  SQLException {
+        // board 객체 생성
+        Board board1 = new Board(1, 1, "bcsd", "aaa");
+        // boardRepository의 createBoard 메소드 호출
+        Board newBoard = boardRepository.createBoard(board1);
 
-        User findUser = userRepository.findById(1);
+        Board findBoard = boardRepository.findById(1);
 
-        assertThat(findUser.getId()).isEqualTo(1);
+        assertThat(findBoard.getId()).isEqualTo(1);
     }
 
     @Test
-    void updateUsername() throws SQLException {
-        User user1 = new User("userA", "bcsdlab@koreatech.ac.kr", "1111");
-        userRepository.createUser(user1);
+    void updateBoardTitle() throws SQLException {
+        Board board1 = new Board(1, 1, "bcsd", "aaa");
+        boardRepository.createBoard(board1);
 
-        userRepository.updateUsername(1, "updateA");
-        User updateUser = userRepository.findById(1);
-        log.info("user={}", updateUser);
-        assertThat(updateUser.getUsername()).isEqualTo("updateA");
+        boardRepository.updateBoardTitle(1, "updatebcsd");
+        Board updateBoard = boardRepository.findById(1);
+        log.info("board={}", updateBoard);
+        assertThat(updateBoard.getTitle()).isEqualTo("updatebcsd");
     }
 
-//    @Test
-//    void deleteUser() throws SQLException {
-//        userRepository.deleteUser(1);
-//
-//        Integer deleteId = userRepository.findById(1).getId();
-//
-//        assertThat(deleteId).isNull();
-//    }
+    @Test
+    void deleteBoard() throws SQLException {
+        // id가 1인 board 삭제
+        boardRepository.deleteBoard(1);
+
+        // id가 1인 board를 찾는다
+        Integer deleteID = boardRepository.findById(1).getId();
+
+        assertThat(deleteID).isNull();
+    }
 
     static class Helper {
         public static void clearDB() throws SQLException {
             Connection connection = null;
             Statement statement = null;
-            String sql1 = "delete from users";
-            String sql2 = "alter table users AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
+            String sql1 = "delete from board";
+            String sql2 = "alter table board AUTO_INCREMENT = 1";//DB에 넘길 SQL 작성
 
             try {
                 connection = DBConnectionManager.getConnection();//DriverManger 통해서 DB커넥션 생성
