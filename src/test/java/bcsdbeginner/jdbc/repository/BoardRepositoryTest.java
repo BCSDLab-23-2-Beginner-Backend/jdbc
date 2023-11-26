@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BoardRepositoryTest {
 
     BoardRepository boardRepository = new BoardRepository();
-
     //@BeforeEach
     void clearDB() throws SQLException {
         UserRepositoryTest.Helper.clearDB();
